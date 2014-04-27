@@ -560,6 +560,59 @@ function getDataSource(params) {
   return src;
 }
 
+
+function getRenderFunc2(params) { 
+  var elem = params.elem;
+  var selector = params.selector;
+  var trans = params.trans;
+  var verse = params.verse|0;
+  var randnum = Math.random()*1000000|0;
+  var func = 'quran' + randnum;
+
+  window[func] = function(x) {var html = '';
+    // late resolution of elem 
+    if (!elem) {
+      elem = document.querySelector(params.selector);
+    }
+    if (x.entry && x.entry.content) {
+      elem.innerHTML = x.entry.content.$t + ' ﴿' + toArabDigits(verse) + '﴾ ';
+    } else {
+		if( x && x.quran && x.quran['quran-simple'] ){
+			var key = Object.keys( x.quran['quran-simple'] ).length > 0 && Object.keys( x.quran['quran-simple'] )[0];
+			if(key){
+				html = x.quran['quran-simple'][ key ] && x.quran['quran-simple'][ key ].verse
+						+ '<nobr> ﴿' + toArabDigits(verse).split("").reverse().join("") + '﴾ </nobr>';
+				elem.innerHTML = html; return;
+			}
+		}
+      elem.innerHTML = x.table.rows.map(function(row,idx) {
+        return row.c[0].v + '<nobr> ﴿' + toArabDigits(verse+idx) + '﴾ </nobr>';
+      }).join('');
+      if (trans) {
+        document.querySelector(trans).innerHTML = x.table.rows.map(function(row,idx) {
+          return row.c[1].v;
+        }).join(' ');
+      }
+    }
+  }
+  return func;
+}
+
+function getDataSource2(params) { //http://api.globalquran.com/surah/114/quran-simple?beta&jsoncallback=
+  var url = "http://api.globalquran.com/ayah/$SURA:$AYAH/quran-simple?beta&format=jsonp&callback="; 
+  var vnum = 0;
+  var chapter = params.chapter;
+  var count = params.count|0;
+  var verse = params.verse|0;
+  var chapter = params.chapter|0;
+  var trans = params.trans;
+  var src = url.replace(/\$SURA/g, chapter).replace(/\$AYAH/g, verse);
+  var func = getRenderFunc2(params);
+  var end;
+  src += func;
+  return src;
+}
+
 (function() {
   var scripts = document.getElementsByTagName('script');
   var thisScript = document.currentScript || scripts[scripts.length-1];
@@ -588,6 +641,6 @@ function getDataSource(params) {
 
   gs = document.createElement('script');
   gs.async="true";
-  gs.src=getDataSource(params);
+  gs.src=getDataSource2(params);
   s.parentNode.insertBefore(gs, s);
 }());
