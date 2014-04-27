@@ -562,9 +562,11 @@ function getDataSource(params) {
 
 
 function getRenderFunc2(params) { 
+  var DEFAULT='quran-simple', TRANS = 'en.sahih', WORD2WORD = 'quran-wordbyword', CORPUS = 'quran-corpus-qd';
   var elem = params.elem;
   var selector = params.selector;
   var trans = params.trans;
+  DEFAULT = WORD2WORD;
   var verse = params.verse|0;
   var randnum = Math.random()*1000000|0;
   var func = 'quran' + randnum;
@@ -577,16 +579,25 @@ function getRenderFunc2(params) {
     if (x.entry && x.entry.content) {
       elem.innerHTML = x.entry.content.$t + ' ﴿' + toArabDigits(verse) + '﴾ ';
     } else {
-	  if( x && x.quran && x.quran['quran-simple'] ){ html = ''; htmlEn = '';
-	   for(var item in x.quran['quran-simple']){
-		html += x.quran['quran-simple'][ item ].verse + '<nobr> ﴿' + toArabDigits(verse).split("").reverse().join("") + '﴾ </nobr>';
-		if(trans){ htmlEn += x.quran['en.sahih'][ item ].verse + '<nobr> (' + x.quran['en.sahih'][item].surah +':'+ x.quran['en.sahih'][item].ayah + ') </nobr>'; }
+	  if( x && x.quran && x.quran[DEFAULT] ){ html = ''; htmlEn = '';
+	   for(var item in x.quran[DEFAULT]){
+		html += renderVerse( x.quran[DEFAULT][ item ].verse ) + '<nobr> ﴿' + toArabDigits(verse).split("").reverse().join("") + '﴾ </nobr>';
+		if(trans){ htmlEn += x.quran[TRANS][ item ].verse + '<nobr> (' + x.quran[TRANS][item].surah +':'+ x.quran[TRANS][item].ayah + ') </nobr>'; }
 	   }
 	   elem.innerHTML = html; if(trans){ document.querySelector(trans).innerHTML = htmlEn; }
 	  }
     }
   }
   return func;
+}
+
+function renderVerse(verse){
+	if(verse.indexOf('$') == -1){
+		return verse;
+	}
+	return verse.split('$').map( function(o){ 
+		return o ? '<span class=word><span dir=rtl class=ar>'+ o.split('|')[0] +'</span><span dir=ltl class=en>'+ o.split('|')[1] + '</span></span>' : '';
+	}).join('');
 }
 
 function getDataSource2(params) { //Ex: http://api.globalquran.com/surah/114/quran-simple?beta&jsoncallback=
@@ -597,6 +608,7 @@ function getDataSource2(params) { //Ex: http://api.globalquran.com/surah/114/qur
   var verse = params.verse|0;
   var chapter = params.chapter|0;
   var trans = params.trans;
+  DEFAULT = WORD2WORD;
   var qurantype = trans ? DEFAULT+'|'+TRANS : DEFAULT;
   var src = url.replace(/\$SURA/g, chapter).replace(/\$AYAH/g, verse).replace(/\$QURANTYPE/g, qurantype);
   var func = getRenderFunc2(params);

@@ -12,8 +12,35 @@
 	font-size: 36px; 
 	font-family: me_quran, Traditional Arabic; 
 	text-align: right; 
-	line-height: 72px; 
+	/*line-height: 72px; */
 	direction: rtl;
+}
+.word{
+	padding: .2em .3em .2em .3em;
+	margin-left: 8px;
+	margin-right: 8px;
+	display: inline-block;
+	zoom: 1;
+	vertical-align: baseline;
+	text-align: center;
+	/*float: right;*/
+}
+.word .ar{
+	display: block;
+	vertical-align: baseline;
+	padding-top: .2em;
+	padding-bottom: .2em;
+}
+
+.word .en{
+	display: block;
+	font-size: 14px;
+	vertical-align: baseline;
+	background-color: rgb(255, 254, 229);
+}
+
+.translation{
+	background-color: rgb(255, 254, 229);
 }
 
 .surahHeaderFrame {
