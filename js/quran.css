@@ -31,12 +31,25 @@
 	padding-top: .2em;
 	padding-bottom: .2em;
 }
+.word .buck{
+	display: block;
+	vertical-align: baseline;
+	padding-top: .2em;
+	padding-bottom: .2em;
+}
 
 .word .en{
 	display: block;
 	font-size: 14px;
 	vertical-align: baseline;
 	background-color: rgb(255, 254, 229);
+}
+
+.word .corpus{
+	display: block;
+	font-size: 8px;
+	vertical-align: baseline;
+	background-color: rgb(25, 254, 229);
 }
 
 .translation{

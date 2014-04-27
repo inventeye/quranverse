@@ -491,6 +491,130 @@ QuranData.Sajda = [
 	[84, 21, 'recommended'],
 	[96, 19, 'obligatory'],
 ];
+
+///////////////////// BUCK STUFF ///////////////////////////
+var BuckToBare = function(str){ if(!str) return;
+	str = str.replace(/[{`><]/g, 'A').replace(/[\&]/g, 'w').replace(/[}]/g, 'y').replace( /[\FNK#aeiou~\^]/g, '');
+	return str;
+}
+
+var isArabic = function (word){ if(!word) return false; 
+	var regex = /^[\u0600-\u06ff]*$/, result=null;
+	$.each(word.split(''), function(a, token){
+		if(token){token = $.trim(token);
+			if(token != "-") //lets ignore hyphen
+				result == null ? result = regex.test( token ) : result = result && regex.test(token);
+		}
+	});
+	return result;
+	//var arabic = ArToEn(word).trim();
+	//return ('' != arabic && word.trim().length == arabic.length );
+}
+
+var isEnglish = function (word){ if(!word) return; var eng = EnToAr(word).trim();
+	return ('' != eng && word.trim().length == eng.length );
+}
+
+var EnToAr = function(word){
+	if(!word) return null;
+	initializeMapper();
+	var ar = '', l, letter, found=false;
+	try{
+		var wordArr = word.split(''); //split into letters.	//lookup from english to arabic letter. and return it.
+		for(l=0; l<wordArr.length; ++l){
+			letter = wordArr[l]; found = false;
+			for(n=1; n<_buckArr.length; ++n){
+				if(letter == _buckArr[n]){
+					ar += _charsArr[n]; found=true;
+					break;
+				}
+			}
+			if(!found)  ar += ''; //letter; //' ??'+letter+'?? ';
+		}
+	}catch(ex){
+		debugger;
+		ar = '-err: ' + ex + ex.message + ex.lineno;
+	}
+	return ar;
+}
+
+var ArToEn = function(word){
+	if(!word) return null;
+	initializeMapper();
+	var ar = '', l, letter, found=false;
+	try{
+		var wordArr = word.split(''); //split into letters.	//lookup from english to arabic letter. and return it.
+		for(l=0; l<wordArr.length; ++l){
+			letter = wordArr[l]; found = false;
+			for(n=1; n<_charsArr.length; ++n){
+				if(letter == _charsArr[n]){
+					ar += _buckArr[n]; found=true;
+					break;
+				}
+			}
+			if(!found){  ar += '?'; _log('No mapping found:\t' + letter + ''); 
+			}
+		}
+	}catch(ex){
+		debugger;
+		ar = '-err: ' + ex + ex.message + ex.lineno;
+	}
+	return ar;
+}
+
+var _charsArr, _buckArr, bInitialized = false;
+var initializeMapper = function(){
+	if(bInitialized) return;
+	var qBare = null, qBuck = null;		
+	var stopletters = "ۚۖۛۗۙ";
+	var chars='آ ا ب ت ث ج ح خ د ذ ر ز س ش ص ض ط ظ ع غ ف ق ك ل م ن ه و ي آ';
+	var buck = 'A A b t v j H x d * r z s $ S D T Z E g f q k l m n h w y A';
+	var buckArr, charsArr;
+	var ext = new Array();
+	var map = { };
+	charsArr = chars.split(' ');
+	buckArr  = buck.split(' ');
+	//mISSING CHARACTERS:		// أ إ ئ ء ة ؤ
+	charsArr.push( 'ى' ); buckArr.push( 'Y' );
+	charsArr.push( 'أ' ); buckArr.push( '>' );
+	charsArr.push( 'إ' ); buckArr.push( '<' );	//charsArr.push( ' ' ); buckArr.push( ' ' ); //charsArr.push( '' ); buckArr.push( '' );
+	charsArr.push( 'ئ' ); buckArr.push( '}' );
+	charsArr.push( 'ء' ); buckArr.push( '\'' ); //buckArr.push( '\'' );
+	//charsArr.push( 'ة' ); buckArr.push( 'P' );
+	charsArr.push( 'ؤ' ); buckArr.push( '&' );
+	//missing characters for harakath.
+	charsArr.push( '\u0652' ); buckArr.push( 'o' );
+	charsArr.push( '\u064e' ); buckArr.push( 'a' );
+	charsArr.push( '\u0650' ); buckArr.push( 'i' );
+	charsArr.push( '\u064f' ); buckArr.push( 'u' );
+	charsArr.push( '\u064b' ); buckArr.push( 'F' );
+	charsArr.push( '\u064d' ); buckArr.push( 'K' );
+	charsArr.push( '\u064c' ); buckArr.push( 'N' );
+	charsArr.push( '\u0626' ); buckArr.push( '}' );
+	charsArr.push( '\u0640' ); buckArr.push( '_' );
+	charsArr.push( '\u0651' ); buckArr.push( '~' );
+	charsArr.push( '\u0653' ); buckArr.push( '^' );
+	charsArr.push( '\u0654' ); buckArr.push( '#' );
+	charsArr.push( '\u0671' ); buckArr.push( '{' );
+	charsArr.push( '\u0670' ); buckArr.push( '`' );
+	charsArr.push( '\u06e5' ); buckArr.push( ',' );
+	charsArr.push( '\u06e6' ); buckArr.push( '.' );
+	charsArr.push( 'ة' ); buckArr.push( 'p' );
+	charsArr.push( '\u06df' ); buckArr.push( '@' );
+	charsArr.push( '\u06e2' ); buckArr.push( '[' );
+	charsArr.push( '\u06ed' ); buckArr.push( ']' );
+	charsArr.push( '\u0621' ); buckArr.push( '\'' );
+	charsArr.push( '\u06DC' ); buckArr.push( ':' );
+	charsArr.push( '\u06E0' ); buckArr.push( '\"' );
+	charsArr.push( ' ' ); buckArr.push( ' ' );
+	charsArr.push( ';' ); buckArr.push( ';' );
+	charsArr.push( '\n' ); buckArr.push( '\n' );
+	_charsArr = charsArr; _buckArr = buckArr;
+	bInitialized = true;
+}		
+initializeMapper();
+////////////////// END BUCK STUFF /////////////////////////
+
 function toArabDigits(num) {
   var anum = '';
   var arabdigits = [ '٠', '١', '٢', '٣', '٤', '٥', '٦', '٧',  '٨','٩' ];
@@ -566,7 +690,7 @@ function getRenderFunc2(params) {
   var elem = params.elem;
   var selector = params.selector;
   var trans = params.trans;
-  DEFAULT = WORD2WORD;
+  DEFAULT = CORPUS; //WORD2WORD;
   var verse = params.verse|0;
   var randnum = Math.random()*1000000|0;
   var func = 'quran' + randnum;
@@ -592,12 +716,22 @@ function getRenderFunc2(params) {
 }
 
 function renderVerse(verse){
-	if(verse.indexOf('$') == -1){
-		return verse;
+	if(verse.indexOf('⚓') != -1 || verse.indexOf('★') != -1 ){//Corpus
+		return verse.split('★').map( function(o){
+			return o ? '<span class=word><span dir=rtl class=buck>'+ EnToAr(o.split('⚓')[0]) +'</span><span dir=ltr class=en>'+ o.split('⚓')[1] + '</span><span dir=ltr class=corpus>' + buckescape(o.split('⚓')[2]) + '</span><span style="display:none">' + buckescape(o.split('⚓')[0]) + '</span></span>' : '';
+		}).join('');
 	}
-	return verse.split('$').map( function(o){ 
-		return o ? '<span class=word><span dir=rtl class=ar>'+ o.split('|')[0] +'</span><span dir=ltl class=en>'+ o.split('|')[1] + '</span></span>' : '';
-	}).join('');
+	else if(verse.indexOf('$') != -1){//WordByWord
+		return verse.split('$').map( function(o){ 
+			return o ? '<span class=word><span dir=rtl class=ar>'+ o.split('|')[0] +'</span><span dir=ltl class=en>'+ o.split('|')[1] + '</span></span>' : '';
+		}).join('');
+	}
+	else
+		return verse;
+}
+
+function buckescape(buck){
+	return buck.replace(/\</g, '&lt;');
 }
 
 function getDataSource2(params) { //Ex: http://api.globalquran.com/surah/114/quran-simple?beta&jsoncallback=
@@ -608,7 +742,7 @@ function getDataSource2(params) { //Ex: http://api.globalquran.com/surah/114/qur
   var verse = params.verse|0;
   var chapter = params.chapter|0;
   var trans = params.trans;
-  DEFAULT = WORD2WORD;
+  DEFAULT = CORPUS; //WORD2WORD;
   var qurantype = trans ? DEFAULT+'|'+TRANS : DEFAULT;
   var src = url.replace(/\$SURA/g, chapter).replace(/\$AYAH/g, verse).replace(/\$QURANTYPE/g, qurantype);
   var func = getRenderFunc2(params);
