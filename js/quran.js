@@ -690,7 +690,7 @@ function getRenderFunc2(params) {
   var elem = params.elem;
   var selector = params.selector;
   var trans = params.trans;
-  DEFAULT = CORPUS; //WORD2WORD;
+  var qurantype = params.qurantype;
   var verse = params.verse|0;
   var randnum = Math.random()*1000000|0;
   var func = 'quran' + randnum;
@@ -703,9 +703,9 @@ function getRenderFunc2(params) {
     if (x.entry && x.entry.content) {
       elem.innerHTML = x.entry.content.$t + ' ﴿' + toArabDigits(verse) + '﴾ ';
     } else {
-	  if( x && x.quran && x.quran[DEFAULT] ){ html = ''; htmlEn = '';
-	   for(var item in x.quran[DEFAULT]){
-		html += renderVerse( x.quran[DEFAULT][ item ].verse ) + '<nobr> ﴿' + toArabDigits(verse).split("").reverse().join("") + '﴾ </nobr>';
+	  if( x && x.quran && x.quran[qurantype] ){ html = ''; htmlEn = '';
+	   for(var item in x.quran[qurantype]){
+		html += renderVerse( x.quran[qurantype][ item ].verse ) + '<nobr> ﴿' + toArabDigits(verse).split("").reverse().join("") + '﴾ </nobr>';
 		if(trans){ htmlEn += x.quran[TRANS][ item ].verse + '<nobr> (' + x.quran[TRANS][item].surah +':'+ x.quran[TRANS][item].ayah + ') </nobr>'; }
 	   }
 	   elem.innerHTML = html; if(trans){ document.querySelector(trans).innerHTML = htmlEn; }
@@ -742,8 +742,9 @@ function getDataSource2(params) { //Ex: http://api.globalquran.com/surah/114/qur
   var verse = params.verse|0;
   var chapter = params.chapter|0;
   var trans = params.trans;
-  DEFAULT = CORPUS; //WORD2WORD;
-  var qurantype = trans ? DEFAULT+'|'+TRANS : DEFAULT;
+  var qurantype = params.qurantype;
+  params.qurantype = qurantype = ( qurantype ? (qurantype == 'grammar' ? CORPUS : (qurantype == 'wordbyword' ? WORD2WORD : DEFAULT) ) : DEFAULT );
+  qurantype = trans ? qurantype +'|'+ TRANS : qurantype;
   var src = url.replace(/\$SURA/g, chapter).replace(/\$AYAH/g, verse).replace(/\$QURANTYPE/g, qurantype);
   var func = getRenderFunc2(params);
   var end;
@@ -758,7 +759,7 @@ function getDataSource2(params) { //Ex: http://api.globalquran.com/surah/114/qur
   var s = scripts[0];
   var gs,l;
 
-  [ 'chapter', 'verse', 'count', 'selector', 'trans' ].forEach(function(k) {
+  [ 'chapter', 'verse', 'count', 'selector', 'trans', 'qurantype' ].forEach(function(k) {
     var p =thisScript.getAttribute(k);
     if (p) {
       params[k] = p;

@@ -36,70 +36,58 @@
 <a name="welcome-to-quran-verse" class="anchor" href="#welcome-to-quran-verse"><span class="octicon octicon-link"></span></a>Easily embed a verse from Qur'aan</h3>
 
 <p>Here's how to easily embed a verse from the Qur'aan on any website.</p>
-<pre><code>
-&lt;script chapter="2" verse="255" 
-   src="http://inventeye.github.io/quranverse/js/quran.js"&gt;
-&lt;/script&gt;
-</code></pre>
-	<script chapter="2" verse="255" src="js/quran.js" type="text/javascript">
-	</script>
-<BR>
-Here it is as an image for comparison:
-<img src="http://c00022506.cdn1.cloudfiles.rackspacecloud.com/2_255.png" alt="2:255">
-<BR>
-
-<p>Another example:</p>
-<pre><code>
-&lt;script chapter="37" verse="137" 
+<pre><code>&lt;script chapter="37" verse="137" 
    src="http://inventeye.github.io/quranverse/js/quran.js"&gt;
 &lt;/script&gt;
 </code></pre>	
 	<script chapter="37" verse="137" src="js/quran.js" type="text/javascript">
     </script>
+
 	
 <BR><p>An example with english translation included. Just add another parameter called trans like so:</p>
-<pre><code>
-&lt;script chapter="37" verse="123" trans="#translation"
+<pre><code>&lt;script chapter="37" verse="123" trans="#translation"
    src="http://inventeye.github.io/quranverse/js/quran.js"&gt;
-&lt;/script&gt;
-&lt;div id='translation'&lt;&gt;/div&gt;
+&lt;/script&gt;&lt;div id='translation'&gt;&lt;/div&gt;
 </code></pre>	<!-- &lt;div id='verses2'&lt;&gt;/div&gt; -->
 	<script chapter="37" verse="123" xselector="#verses2" trans="#translation" count="5" src="js/quran.js" type="text/javascript">
     </script>
     <div id='translation' class='translation'></div>
 
 
-<BR><p>Another example, this time with multiple verses. Just set the count like so:</p>
-<pre><code>
-&lt;script chapter="37" verse="123" count="5"
+<BR><p>An example showing wordbyword. Just add a parameter called qurantype like so:</p>
+<pre><code>&lt;script chapter="37" verse="123" trans="#translation2" qurantype="wordbyword"
+   src="http://inventeye.github.io/quranverse/js/quran.js"&gt;
+&lt;/script&gt;
+&lt;div id='translation'&lt;&gt;/div&gt;
+</code></pre>	<!-- &lt;div id='verses2'&lt;&gt;/div&gt; -->
+	<script chapter="37" verse="123" xselector="#verses2" trans="#translation2" qurantype="wordbyword" count="5" src="js/quran.js" type="text/javascript">
+    </script>
+    <div id='translation2' class='translation'></div>
+
+
+
+<BR><p>Another example showing a qurantype grammar:</p>
+<pre><code>&lt;script chapter="2" verse="255" qurantype="grammar"
+   src="http://inventeye.github.io/quranverse/js/quran.js"&gt;
+&lt;/script&gt;
+</code></pre>
+	<script chapter="2" verse="255" qurantype="grammar" src="js/quran.js" type="text/javascript">
+	</script>
+<BR>
+Here it is as an image for comparison:
+<img src="http://c00022506.cdn1.cloudfiles.rackspacecloud.com/2_255.png" alt="2:255">
+
+
+<BR><BR><p>Another example, this time with multiple verses. Just set the count like so:<BR>
+NOTE: This isn't currently displaying ayahs other than the first one. This is a known issue. WIP.</p>
+<pre><code>&lt;script chapter="37" verse="123" count="5"
    src="http://inventeye.github.io/quranverse/js/quran.js"&gt;
 &lt;/script&gt;
 </code></pre>	
 	<script chapter="37" verse="123" count="5" src="js/quran.js" type="text/javascript">
     </script>
-	
-
-<!--
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
-
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
--->      </section>
+	  
+	  </section>
     </div>
 
     <!-- FOOTER  -->
