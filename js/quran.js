@@ -569,7 +569,7 @@ function getRenderFunc2(params) {
   var randnum = Math.random()*1000000|0;
   var func = 'quran' + randnum;
 
-  window[func] = function(x) {var html = '';
+  window[func] = function(x) {var html = '', htmlEn = '';
     // late resolution of elem 
     if (!elem) {
       elem = document.querySelector(params.selector);
@@ -577,36 +577,28 @@ function getRenderFunc2(params) {
     if (x.entry && x.entry.content) {
       elem.innerHTML = x.entry.content.$t + ' ﴿' + toArabDigits(verse) + '﴾ ';
     } else {
-		if( x && x.quran && x.quran['quran-simple'] ){
-			var key = Object.keys( x.quran['quran-simple'] ).length > 0 && Object.keys( x.quran['quran-simple'] )[0];
-			if(key){
-				html = x.quran['quran-simple'][ key ] && x.quran['quran-simple'][ key ].verse
-						+ '<nobr> ﴿' + toArabDigits(verse).split("").reverse().join("") + '﴾ </nobr>';
-				elem.innerHTML = html; return;
-			}
-		}
-      elem.innerHTML = x.table.rows.map(function(row,idx) {
-        return row.c[0].v + '<nobr> ﴿' + toArabDigits(verse+idx) + '﴾ </nobr>';
-      }).join('');
-      if (trans) {
-        document.querySelector(trans).innerHTML = x.table.rows.map(function(row,idx) {
-          return row.c[1].v;
-        }).join(' ');
-      }
+	  if( x && x.quran && x.quran['quran-simple'] ){ html = ''; htmlEn = '';
+	   for(var item in x.quran['quran-simple']){
+		html += x.quran['quran-simple'][ item ].verse + '<nobr> ﴿' + toArabDigits(verse).split("").reverse().join("") + '﴾ </nobr>';
+		if(trans){ htmlEn += x.quran['en.sahih'][ item ].verse + '<nobr> (' + x.quran['en.sahih'][item].surah +':'+ x.quran['en.sahih'][item].ayah + ') </nobr>'; }
+	   }
+	   elem.innerHTML = html; if(trans){ document.querySelector(trans).innerHTML = htmlEn; }
+	  }
     }
   }
   return func;
 }
 
-function getDataSource2(params) { //http://api.globalquran.com/surah/114/quran-simple?beta&jsoncallback=
-  var url = "http://api.globalquran.com/ayah/$SURA:$AYAH/quran-simple?beta&format=jsonp&callback="; 
+function getDataSource2(params) { //Ex: http://api.globalquran.com/surah/114/quran-simple?beta&jsoncallback=
+  var url = "http://api.globalquran.com/ayah/$SURA:$AYAH/$QURANTYPE?beta&format=jsonp&callback=", DEFAULT='quran-simple', TRANS = 'en.sahih', WORD2WORD = 'quran-wordbyword', CORPUS = 'quran-corpus-qd';
   var vnum = 0;
   var chapter = params.chapter;
   var count = params.count|0;
   var verse = params.verse|0;
   var chapter = params.chapter|0;
   var trans = params.trans;
-  var src = url.replace(/\$SURA/g, chapter).replace(/\$AYAH/g, verse);
+  var qurantype = trans ? DEFAULT+'|'+TRANS : DEFAULT;
+  var src = url.replace(/\$SURA/g, chapter).replace(/\$AYAH/g, verse).replace(/\$QURANTYPE/g, qurantype);
   var func = getRenderFunc2(params);
   var end;
   src += func;

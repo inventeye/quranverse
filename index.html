@@ -56,6 +56,27 @@ Here it is as an image for comparison:
 	<script chapter="37" verse="137" src="js/quran.js" type="text/javascript">
     </script>
 	
+<BR><p>An example with english translation included. Just add another parameter called trans like so:</p>
+<pre><code>
+&lt;script chapter="37" verse="123" trans="#translation"
+   src="http://inventeye.github.io/quranverse/js/quran.js"&gt;
+&lt;/script&gt;
+&lt;div id='translation'&lt;&gt;/div&gt;
+</code></pre>	<!-- &lt;div id='verses2'&lt;&gt;/div&gt; -->
+	<script chapter="37" verse="123" xselector="#verses2" trans="#translation" count="5" src="js/quran.js" type="text/javascript">
+    </script>
+    <div id='translation'></div>
+
+
+<BR><p>Another example, this time with multiple verses. Just set the count like so:</p>
+<pre><code>
+&lt;script chapter="37" verse="123" count="5"
+   src="http://inventeye.github.io/quranverse/js/quran.js"&gt;
+&lt;/script&gt;
+</code></pre>	
+	<script chapter="37" verse="123" count="5" src="js/quran.js" type="text/javascript">
+    </script>
+	
 
 <!--
 <h3>
